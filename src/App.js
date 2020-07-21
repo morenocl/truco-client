@@ -1,11 +1,16 @@
 import React from 'react'
 
+import { ContextAppProvider } from './contextApp'
+import SignIn from './SignIn'
+
 
 function App() {
   return (
-    <div className="App">
-      App.
-    </div>
+    <ContextAppProvider>
+      <div className="App" align='center'>
+        <SignIn />
+      </div>
+    </ContextAppProvider>
   )
 }
 
