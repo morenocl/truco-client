@@ -1,14 +1,17 @@
-import React from 'react'
+import React, { useContext } from 'react'
 
 import { ContextAppProvider } from './contextApp'
-import SignIn from './SignIn'
+import { ContextApp } from './contextApp'
+import Routes from './Routes'
 
 
 function App() {
+  const [context, setContext] = useContext(ContextApp)
+
   return (
     <ContextAppProvider>
       <div className="App" align='center'>
-        <SignIn />
+        <Routes auth={context['auth']}/>
       </div>
     </ContextAppProvider>
   )

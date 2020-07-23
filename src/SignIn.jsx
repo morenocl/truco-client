@@ -33,14 +33,14 @@ const SignIn = () => {
   const buttons = (
     <>
       <Button
-        onClick={() => register(state, (r) => console.log(r))}
+        onClick={() => register(state, (r) => console.log('ok', r), (r) => console.log('fail', r))}
       >
         Register
       </Button>
       <Button
         onClick={() => {
-          login(state, (r) => console.log(r))
-          setContext({...context, auth: true, username: state['username']})
+          setContext({ auth: true, username: state['username']})
+          login(state, (r) => console.log(r), (r) => console.log(r))
         }}
       >
         Enter
