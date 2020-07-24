@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react'
 import { Box, Button, Input } from "@chakra-ui/core"
 
-import { login, register } from './utils/Api'
+import { login, register } from './utils/Mock'
 import { ContextApp } from './contextApp'
 
 
@@ -30,17 +30,22 @@ const SignIn = () => {
     </>
   )
 
+  const onSuccessLogin = (r) => {
+    console.log(r)
+    setContext({...context, token: r['token'], username: state['username'], auth: true})
+  }
+
   const buttons = (
     <>
       <Button
-        onClick={() => register(state, (r) => console.log('ok', r), (r) => console.log('fail', r))}
+        onClick={() => register(state, () => console.log('registro ok'), (r) => console.log('fail', r))}
       >
         Register
       </Button>
       <Button
         onClick={() => {
           setContext({ auth: true, username: state['username']})
-          login(state, (r) => console.log(r), (r) => console.log(r))
+          login(state, onSuccessLogin, (r) => console.log(r))
         }}
       >
         Enter

@@ -6,6 +6,7 @@ import Lobby from './Lobby'
 import Game from './Game'
 import Error from './Error'
 import ConditionalRoute from './ConditionalRoute'
+import { ContextApp } from './contextApp'
 
 
 
@@ -20,22 +21,30 @@ const toCondRoute = (condition, redir) => (({ component, path }) => (
   />
 ))
 
-const Routes = ({ auth }) => (
-  <Switch>
-    {/* Only if authenticated. */}
-    {[{ auth, path: '/create', component: Lobby },
-      { auth, path: '/game', component: Game },
-    ].map(toCondRoute(auth, '/'))}
+const Routes = () => (
+  <ContextApp.Consumer>
+    { ([context, setContext]) => {
+      const auth = context.auth
+      console.log('Context', context)
+      return (
+        <Switch>
+          {/* Only if authenticated. */}
+          {[{ auth, path: '/create', component: Lobby },
+            { auth, path: '/game', component: Game },
+          ].map(toCondRoute(auth, '/'))}
 
-    {/* Only if not authenticated. */}
-    {[{ path: '/', component: SignIn },
-  ].map(toCondRoute(!auth, '/create'))}
+          {/* Only if not authenticated. */}
+          {[{ path: '/', component: SignIn },
+        ].map(toCondRoute(!auth, '/create'))}
 
-    {/* Default. */}
-    <Route>
-      <Error message="Page not found" />
-    </Route>
-  </Switch>
+          {/* Default. */}
+          <Route>
+            <Error message="Page not found" />
+          </Route>
+        </Switch>
+      )}
+    }
+  </ContextApp.Consumer>
 )
 
 export default Routes
