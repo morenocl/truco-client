@@ -3,6 +3,7 @@ import { Button } from "@chakra-ui/core"
 
 import CreateMenu from './CreateMenu'
 import JoinMenu from './JoinMenu'
+import { ContextApp } from './contextApp'
 
 
 const Lobby = () => {
@@ -33,19 +34,21 @@ const Lobby = () => {
 
   let menu = ''
   if (state === 'create')
-    menu = <CreateMenu />
+    menu = ([context, setContext]) => <CreateMenu context={context} setContext={setContext} />
   else if (state === 'join')
-    menu = <JoinMenu />
+    menu = (value) => <JoinMenu />
   else {
-    menu = undefined
+    menu = () => {}
   }
 
   return (
     <>
-      { menu ?
+      { state ?
         back
       : buttons }
-      { menu }
+      <ContextApp.Consumer>
+        { menu }
+      </ContextApp.Consumer>
     </>
   )
 }

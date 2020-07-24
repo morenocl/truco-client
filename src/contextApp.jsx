@@ -4,6 +4,7 @@ import React,  { useState, createContext } from 'react';
 const defaultContextApp = {
   auth: false,
   username: '',
+  stage: 'empty',
 }
 
 export const ContextApp = createContext([

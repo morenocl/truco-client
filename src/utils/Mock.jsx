@@ -47,3 +47,22 @@ export const login = (form, onSuccess, onFailure) => {
        }
      });
 }
+
+export const getPlayers = (onSuccess, onFailure) => {
+  console.log('Getting players.')
+  mkPromise()
+    .then(() => {
+      // Check if user is registered.
+      const users = data.users
+      onSuccess(users)
+    })
+}
+
+export const createGame = (title, numPlayers, nos, ellos, onSuccess, onFailure) => {
+  console.log('Creating game:', title, numPlayers, nos, ellos)
+
+  mkPromise()
+    .then(() =>
+      onSuccess()
+    )
+}
