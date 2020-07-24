@@ -1,10 +1,11 @@
 import React from 'react'
 
+import GameScreen from './GameScreen'
+
+
 const Game = () => {
   return (
-    <>
-      Game
-    </>
+    <GameScreen />
   )
 }
 

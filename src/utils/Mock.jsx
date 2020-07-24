@@ -66,3 +66,14 @@ export const createGame = (title, numPlayers, nos, ellos, onSuccess, onFailure) 
       onSuccess()
     )
 }
+
+export const getGameStarted = (onSuccess, onFailure) => {
+  console.log('Got game_started:')
+
+  mkPromise()
+    .then(() => {
+      const is_started = data.game['game_started']
+      onSuccess(is_started)
+    })
+
+}

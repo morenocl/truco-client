@@ -36,7 +36,7 @@ const Lobby = () => {
   if (state === 'create')
     menu = ([context, setContext]) => <CreateMenu context={context} setContext={setContext} />
   else if (state === 'join')
-    menu = (value) => <JoinMenu />
+    menu = ([context, setContext]) => <JoinMenu context={context} setContext={setContext} />
   else {
     menu = () => {}
   }

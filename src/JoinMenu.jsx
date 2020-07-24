@@ -1,12 +1,44 @@
-import React, { useState } from 'react'
-import { Button } from "@chakra-ui/core"
+import React, { useState, useEffect } from 'react'
+import { Redirect } from 'react-router-dom'
+import { Box, Button } from "@chakra-ui/core"
 
-const JoinMenu = () => {
+import { getGameStarted } from './utils/Mock'
+import { useInterval } from './utils/useInterval'
+
+
+const JoinMenu = ({ context, setContext }) => {
+  const { stage } = context
+
+  const setStage = stage => setContext({...context, stage: stage})
+
+  const onSuccess = (is_started) => {
+    setStage(is_started ? 'started' : stage)
+  }
+  const onFailure = () => {}
+
+  // Refresh every 5 seconds and when mounted.
+  const refresh = () => { getGameStarted(onSuccess, onFailure) }
+  useEffect(refresh, [])
+  useInterval(() => { if (stage !== 'started') refresh(); }, 2000)
+
+
+  if (stage === 'empty') {
+    return (
+      <Box w="50%">
+        Se debe crear una partida.
+      </Box>
+    )
+  }
+
+  if (stage === 'started') {
+      setStage('empty');
+      return (<Redirect to={'/game/'} push />)
+    }
 
   return(
-    <>
-      Join Menu
-    </>
+    <Box w="50%">
+      Esperando a iniciar.
+    </Box>
   )
 }
 

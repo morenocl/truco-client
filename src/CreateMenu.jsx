@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Redirect } from 'react-router-dom'
 import {
   Box,
@@ -11,7 +11,6 @@ import {
 } from "@chakra-ui/core"
 
 import { createGame, getPlayers } from './utils/Mock'
-import { ContextApp } from './contextApp'
 
 
 const CreateMenu = ({ context, setContext }) => {
@@ -20,7 +19,6 @@ const CreateMenu = ({ context, setContext }) => {
   const [nos, setNos] = useState([''])
   const [ellos, setEllos] = useState([''])
   const [listPlayers, setListPlayers] = useState([])
-  // const [context, setContext] = useContext(ContextApp)
   console.log('Grupos: ', nos, ellos)
 
   getPlayers(setListPlayers, (r)=>console.log('Error getPlayers', r))

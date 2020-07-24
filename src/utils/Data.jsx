@@ -7,7 +7,7 @@ const data = {
     { username: 'user3', password: '1234'},
     { username: 'user4', password: '1234'},
   ],
-
+  game: {}
 }
 
 export default data
