@@ -23,11 +23,3 @@ export const ContextAppProvider = ({ children }) => {
     </ContextApp.Provider>
   )
 }
-
-export const ContextAppConsumer = ({ children }) => {
-  return (
-    <ContextApp.Consumer>
-      {([context, setContext]) => { return children({context, setContext}) }}
-    </ContextApp.Consumer>
-  )
-}

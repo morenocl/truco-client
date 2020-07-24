@@ -44,8 +44,7 @@ const SignIn = () => {
       </Button>
       <Button
         onClick={() => {
-          setContext({ auth: true, username: state['username']})
-          login(state, onSuccessLogin, (r) => console.log(r))
+          login(state, onSuccessLogin, (r) => console.log('fail', r))
         }}
       >
         Enter
