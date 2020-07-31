@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { Redirect } from 'react-router-dom'
 import {
   Box,
@@ -10,7 +10,8 @@ import {
   Select
 } from "@chakra-ui/core"
 
-import { createGame, getPlayers } from './utils/Mock'
+import { createGame, getPlayers, startGame } from './utils/Mock'
+import { useInterval } from './utils/useInterval'
 
 
 const CreateMenu = ({ context, setContext }) => {
@@ -21,10 +22,11 @@ const CreateMenu = ({ context, setContext }) => {
   const [listPlayers, setListPlayers] = useState([])
   console.log('Grupos: ', nos, ellos)
 
-  getPlayers(setListPlayers, (r)=>console.log('Error getPlayers', r))
-  useEffect(() => {
-    getPlayers(setListPlayers, (r)=>console.log('Error getPlayers', r))
-  }, [listPlayers])
+  useInterval(() => {
+      getPlayers(setListPlayers, (r)=>console.log('Error getPlayers', r))
+    },
+    2000
+  )
 
 
   const onChangeRadio = e => {
@@ -92,8 +94,21 @@ const CreateMenu = ({ context, setContext }) => {
 
   const onFailureCreate = () => {}
 
-  if (context.stage === 'running') {
+  const setStart = () => {
+    startGame()
+    setContext({...context, stage: 'started'})
+  }
+
+  if (context.stage === 'started') {
     return (<Redirect to={'/game'} push />)
+  }
+
+  if (context.stage === 'running') {
+    return (
+      <Button onClick={setStart}>
+        Comenzar!
+      </Button>
+    )
   }
 
   return(
@@ -102,7 +117,7 @@ const CreateMenu = ({ context, setContext }) => {
       { form }
       { players }
       <Button
-        onClick={() => createGame(titulo, numero, nos, ellos, onSuccessCreate, onFailureCreate)}
+        onClick={() => createGame(context.username, titulo, numero, nos, ellos, onSuccessCreate, onFailureCreate)}
       >
         Crear
       </Button>

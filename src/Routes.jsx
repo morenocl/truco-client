@@ -31,7 +31,7 @@ const Routes = () => (
           {/* Only if authenticated. */}
           {[{ auth, path: '/create', component: Lobby },
             { auth, path: '/game', component: Game },
-          ].map(toCondRoute(auth, '/'))}
+          ].map(toCondRoute(!auth, '/'))}
 
           {/* Only if not authenticated. */}
           {[{ path: '/', component: SignIn },

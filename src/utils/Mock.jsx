@@ -52,28 +52,56 @@ export const getPlayers = (onSuccess, onFailure) => {
   console.log('Getting players.')
   mkPromise()
     .then(() => {
-      // Check if user is registered.
       const users = data.users
       onSuccess(users)
     })
 }
 
-export const createGame = (title, numPlayers, nos, ellos, onSuccess, onFailure) => {
-  console.log('Creating game:', title, numPlayers, nos, ellos)
+export const createGame = (user, title, numPlayers, nos, ellos, onSuccess, onFailure) => {
+  console.log('Creating game:', user, title, numPlayers, nos, ellos)
 
   mkPromise()
-    .then(() =>
+    .then(() => {
+      data.game = { title, numPlayers, nos, ellos, game_started: false, owner: user }
       onSuccess()
-    )
+      console.log(data.game)
+    })
 }
 
 export const getGameStarted = (onSuccess, onFailure) => {
   console.log('Got game_started:')
+  const isEmpty = (dict) => Object.keys(dict).length === 0
 
   mkPromise()
     .then(() => {
-      const is_started = data.game['game_started']
-      onSuccess(is_started)
+      console.log('Estado Game: ', isEmpty(data.game))
+      if (isEmpty(data.game)) {
+        onFailure()
+      } else {
+        const is_started = data.game['game_started']
+        onSuccess(is_started)
+      }
     })
+}
 
+export const startGame = () => {
+  console.log('Set start game.')
+  mkPromise()
+    .then(() => {
+      data.game = {...data.game, game_started: true}
+    })
+}
+
+export const getGameStatus = (onSuccess, onFailure) => {
+  console.log('got game status')
+
+  const actions = data.actions
+  const board = data.board
+  const hand = data.hand
+  const info = data.info
+
+  mkPromise()
+    .then(() => {
+      onSuccess(actions, board, hand, info)
+    })
 }

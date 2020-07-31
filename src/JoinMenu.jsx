@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { Redirect } from 'react-router-dom'
 import { Box, Button } from "@chakra-ui/core"
 
@@ -12,9 +12,9 @@ const JoinMenu = ({ context, setContext }) => {
   const setStage = stage => setContext({...context, stage: stage})
 
   const onSuccess = (is_started) => {
-    setStage(is_started ? 'started' : stage)
+    setStage(is_started ? 'started' : 'running')
   }
-  const onFailure = () => {}
+  const onFailure = () => {console.log('The game is not created')}
 
   // Refresh every 5 seconds and when mounted.
   const refresh = () => { getGameStarted(onSuccess, onFailure) }
