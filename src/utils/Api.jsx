@@ -6,7 +6,7 @@ export const register = (body, onSuccess, onFailure) => {
   const opt = {
     method: 'POST',
     body: JSON.stringify(body),
-    // headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'application/json' },
   }
 
   fetch(path, opt)
@@ -20,10 +20,77 @@ export const login = (body, onSuccess, onFailure) => {
   const opt = {
     method: 'POST',
     body: JSON.stringify(body),
-    // headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'application/json' },
   }
   fetch(path, opt)
-    .then(r => {return r.json()})
+    .then(r => r.json())
     .then(r => onSuccess(r))
     .catch(err => onFailure(err))
+}
+
+
+export const getGameStarted = (username, onSuccess, onFailure) => {
+  console.log('Get game started')
+  const path = url + '/game/' + username
+  const opt = {
+    method: 'GET',
+    headers: { 'Content-Type': 'application/json' },
+  }
+  fetch(path, opt)
+    .then(r =>  r.json())
+    .then(r => {
+      if (r.status === 'ok')
+       onSuccess(r)
+      else
+        onFailure(r.message)
+     })
+    .catch(err => onFailure(err))
+}
+
+
+export const getPlayers = (onSuccess, onFailure) => {
+  console.log('Get players')
+  const path = url + '/user'
+  const opt = {
+    method: 'GET',
+    headers: { 'Content-Type': 'application/json' },
+  }
+  fetch(path, opt)
+    .then(r =>  r.json())
+    .then(r => onSuccess(r.users))
+    .catch(err => onFailure(err))
+}
+
+
+export const createGame = (body, onSuccess, onFailure) => {
+  console.log('Create game')
+  const path = url + '/game'
+  const opt = {
+    method: 'POST',
+    body: JSON.stringify(body),
+    headers: { 'Content-Type': 'application/json' },
+  }
+  fetch(path, opt)
+    .then(r =>  r.json())
+    .then(r => {
+      if (r.status === 'ok')
+       onSuccess(r)
+      else
+        onFailure(r.message)
+     })
+    .catch(err => onFailure(err))
+}
+
+
+export const startGame = (onSuccess, onFailure) => {
+  console.log('start game')
+  // const path = url + ''
+  // const opt = {
+  //   method: '',
+  //   headers: { 'Content-Type': 'application/json' },
+  // }
+  // fetch(path, opt)
+  //   .then(r =>  r.json())
+  //   .then(r => onSuccess(r))
+  //   .catch(err => onFailure(err))
 }

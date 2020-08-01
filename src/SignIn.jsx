@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react'
 import { Box, Button, Input } from "@chakra-ui/core"
 
-import { login, register } from './utils/Mock'
+import { login, register } from './utils/Api'
 import { ContextApp } from './contextApp'
 
 

@@ -10,7 +10,7 @@ import {
   Select
 } from "@chakra-ui/core"
 
-import { createGame, getPlayers, startGame } from './utils/Mock'
+import { createGame, getPlayers, startGame } from './utils/Api'
 import { useInterval } from './utils/useInterval'
 
 
@@ -25,7 +25,7 @@ const CreateMenu = ({ context, setContext }) => {
   useInterval(() => {
       getPlayers(setListPlayers, (r)=>console.log('Error getPlayers', r))
     },
-    2000
+    5000
   )
 
 
@@ -73,8 +73,9 @@ const CreateMenu = ({ context, setContext }) => {
         key={index}
         onChange={onChange(index)}
       >
-        { listPlayers.map(({ username }, index) => (
-            <option key={index} value={username}>{username}</option>
+        { console.log('ListPlayers', listPlayers) }
+        { listPlayers.map((user, index) => (
+            <option key={index} value={user}>{user}</option>
           ))
         }
       </Select>
@@ -92,7 +93,7 @@ const CreateMenu = ({ context, setContext }) => {
     setContext({...context, stage: 'running'})
   }
 
-  const onFailureCreate = () => {}
+  const onFailureCreate = (r) => { console.log('Error Create Game: ', r)}
 
   const setStart = () => {
     startGame()
@@ -117,7 +118,9 @@ const CreateMenu = ({ context, setContext }) => {
       { form }
       { players }
       <Button
-        onClick={() => createGame(context.username, titulo, numero, nos, ellos, onSuccessCreate, onFailureCreate)}
+        onClick={() => {
+          createGame({username: context.username, name: titulo, nosotros: nos, ellos}, onSuccessCreate, onFailureCreate)
+        }}
       >
         Crear
       </Button>
