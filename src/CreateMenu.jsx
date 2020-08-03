@@ -7,19 +7,19 @@ import {
   Input,
   Radio,
   RadioGroup,
-  Select
+  useToast,
 } from "@chakra-ui/core"
 
-import { createGame, getPlayers, startGame } from './utils/Api'
+import { createGame, getPlayers } from './utils/Api'
 import { useInterval } from './utils/useInterval'
-
+import { DropDowns, onChangeRadio } from './utils/functionsLobby'
 
 const CreateMenu = ({ context, setContext }) => {
   const [titulo, setTitulo] = useState('')
-  const [numero, setNumero] = useState(2)
   const [nos, setNos] = useState([''])
   const [ellos, setEllos] = useState([''])
   const [listPlayers, setListPlayers] = useState([])
+  const toast = useToast()
   console.log('Grupos: ', nos, ellos)
 
   useInterval(() => {
@@ -27,14 +27,6 @@ const CreateMenu = ({ context, setContext }) => {
     },
     5000
   )
-
-
-  const onChangeRadio = e => {
-    const num = parseInt(e.target.value)
-    setNumero(num)
-    setNos(Array(num/2).fill(''))
-    setEllos(Array(num/2).fill(''))
-  }
 
   const form = (
     <>
@@ -45,7 +37,7 @@ const CreateMenu = ({ context, setContext }) => {
         onChange={event => setTitulo(event.target.value)}
       />
       <RadioGroup
-        onChange={onChangeRadio}
+        onChange={onChangeRadio(setNos, setEllos)}
         defaultValue="2"
         spacing={5}
         isInline
@@ -54,62 +46,37 @@ const CreateMenu = ({ context, setContext }) => {
         <Radio value="4">4</Radio>
         <Radio value="6">6</Radio>
       </RadioGroup>
-      <FormHelperText id="email-helper-text">
+      <FormHelperText id="num-players-helper-text">
         Selecciona la cantidad de jugadores.
       </FormHelperText>
 
     </>
   )
 
-  const makeMap = (quien, setQuien, textQuien) => {
-    const onChange = index => e => {
-      const newNos = quien
-      newNos[index] = e.target.value
-      setQuien(newNos)
-    }
-    return quien.map((item, index) => (
-      <Select
-        placeholder={textQuien}
-        key={index}
-        onChange={onChange(index)}
-      >
-        { console.log('ListPlayers', listPlayers) }
-        { listPlayers.map((user, index) => (
-            <option key={index} value={user}>{user}</option>
-          ))
-        }
-      </Select>
-    ))
-  }
 
   let players = (
     <>
-      { makeMap(nos, setNos, 'Nosotros') }
-      { makeMap(ellos, setEllos, 'Ellos') }
+      <DropDowns quien={nos} setQuien={setNos}  textQuien='Nosotros' listOptions={listPlayers} />
+      <DropDowns quien={ellos} setQuien={setEllos} textQuien='Ellos' listOptions={listPlayers} />
     </>
   )
 
-  const onSuccessCreate = () => {
-    setContext({...context, stage: 'running'})
+  const onSuccessCreate = (id) => {
+    console.log('Game created, id: ', id)
+    setContext({...context, stage: 'created', game: {id: id}})
+    toast({
+      title: "Game created.",
+      description: "Got to JoinGame to start.",
+      status: "success",
+      duration: 5000,
+      isClosable: true,
+    })
   }
 
   const onFailureCreate = (r) => { console.log('Error Create Game: ', r)}
 
-  const setStart = () => {
-    startGame()
-    setContext({...context, stage: 'started'})
-  }
-
-  if (context.stage === 'started') {
-    return (<Redirect to={'/game'} push />)
-  }
-
-  if (context.stage === 'running') {
-    return (
-      <Button onClick={setStart}>
-        Comenzar!
-      </Button>
-    )
+  const onClick = () => {
+    createGame({username: context.username, name: titulo, nosotros: nos, ellos}, onSuccessCreate, onFailureCreate)
   }
 
   return(
@@ -118,9 +85,7 @@ const CreateMenu = ({ context, setContext }) => {
       { form }
       { players }
       <Button
-        onClick={() => {
-          createGame({username: context.username, name: titulo, nosotros: nos, ellos}, onSuccessCreate, onFailureCreate)
-        }}
+        onClick={onClick}
       >
         Crear
       </Button>

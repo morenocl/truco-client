@@ -31,7 +31,7 @@ export const login = (body, onSuccess, onFailure) => {
 
 export const getGameStarted = (username, onSuccess, onFailure) => {
   console.log('Get game started')
-  const path = url + '/game/' + username
+  const path = url + `/game/${username}`
   const opt = {
     method: 'GET',
     headers: { 'Content-Type': 'application/json' },
@@ -40,7 +40,7 @@ export const getGameStarted = (username, onSuccess, onFailure) => {
     .then(r =>  r.json())
     .then(r => {
       if (r.status === 'ok')
-       onSuccess(r)
+       onSuccess(r.id)
       else
         onFailure(r.message)
      })
@@ -74,7 +74,7 @@ export const createGame = (body, onSuccess, onFailure) => {
     .then(r =>  r.json())
     .then(r => {
       if (r.status === 'ok')
-       onSuccess(r)
+       onSuccess(r.id)
       else
         onFailure(r.message)
      })
@@ -82,15 +82,39 @@ export const createGame = (body, onSuccess, onFailure) => {
 }
 
 
-export const startGame = (onSuccess, onFailure) => {
+export const startGame = (id, onSuccess, onFailure) => {
   console.log('start game')
-  // const path = url + ''
-  // const opt = {
-  //   method: '',
-  //   headers: { 'Content-Type': 'application/json' },
-  // }
-  // fetch(path, opt)
-  //   .then(r =>  r.json())
-  //   .then(r => onSuccess(r))
-  //   .catch(err => onFailure(err))
+  const path = url + `/game/${id}`
+  const opt = {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+  }
+  fetch(path, opt)
+    .then(r =>  r.json())
+    .then(r => {
+      if (r.status === 'ok')
+        onSuccess(r)
+      else
+        onFailure(r.message)
+      })
+    .catch(err => onFailure(err))
+}
+
+
+export const getListGame = (onSuccess, onFailure) => {
+  console.log('Get list player')
+  const path = url + '/game'
+  const opt = {
+    method: 'GET',
+    headers: { 'Content-Type': 'application/json' },
+  }
+  fetch(path, opt)
+    .then(r =>  r.json())
+    .then(r => {
+      if (r.status === 'ok')
+        onSuccess(r.games)
+      else
+        onFailure(r.message)
+      })
+    .catch(err => onFailure(err))
 }
