@@ -11,11 +11,10 @@ const JoinMenu = ({ context, setContext }) => {
   const [listGames, setListGames] = useState([])
   const [game, setGame] = useState('')
   const setStage = stage => setContext({...context, stage: stage})
-  const setId = id => setContext({...context, game: {id: id}})
+  const setGetGame = (id, stage) => setContext({...context, stage: stage, game: {id: id}})
 
   const onSuccessGetGame = (id) => {
-    setStage('running')
-    setId(id)
+    setGetGame(id, 'started')
   }
   const onFailureGetGame = (r) => {console.log('No game created to you.', r)}
 
@@ -31,9 +30,9 @@ const JoinMenu = ({ context, setContext }) => {
     getGameStarted(username, onSuccessGetGame, onFailureGetGame)
   }
   useEffect(refresh, [])
-  useInterval(() => { if (stage !== 'running') refresh(); }, 5000)
+  useInterval(() => { if (stage !== 'started') refresh() }, 5000)
 
-  const onSuccessStart = () => setStage('running')
+  const onSuccessStart = () => setStage('started')
   const onFailureStart = (r) => console.log('Error start game: ',r)
   const buttonStart = (
     <Button onClick={() => startGame(game, onSuccessStart, onFailureStart)}>
@@ -60,7 +59,7 @@ const JoinMenu = ({ context, setContext }) => {
     )
   }
 
-  if (stage === 'running') {
+  if (stage === 'started') {
       return (<Redirect to={'/game/'} push />)
     }
 
