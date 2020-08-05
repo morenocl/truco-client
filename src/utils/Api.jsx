@@ -118,3 +118,22 @@ export const getListGame = (onSuccess, onFailure) => {
       })
     .catch(err => onFailure(err))
 }
+
+
+export const getGameStatus = (id, onSuccess, onFailure) => {
+  console.log('Get Game Status.')
+  const path = url + `/game/${id}`
+  const opt = {
+    method: 'GET',
+    headers: { 'Content-Type': 'application/json' },
+  }
+  fetch(path, opt)
+    .then(r =>  r.json())
+    .then(r => {
+      if (r.status === 'ok')
+        onSuccess(r.game)
+      else
+        onFailure(r.message)
+      })
+    .catch(err => onFailure(err))
+}

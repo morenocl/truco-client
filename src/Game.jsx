@@ -3,25 +3,26 @@ import React, { useEffect } from 'react'
 import GameScreen from './GameScreen'
 import { ContextApp } from './contextApp'
 import { useInterval } from './utils/useInterval'
-import { getGameStatus } from './utils/Mock'
+import { getGameStatus } from './utils/Api'
 
 
 const GameContainer = ({context, setContext}) => {
-  const { stage } = context
-  const setState = (state) => setContext({...context, gameState: state})
+  const { id, stage } = context
+  const setGameState = (state) => setContext({...context, gameState: state})
   const setStage = stage => setContext({...context, stage: stage})
-  const setError = () => {}
+  const setError = (r) => {console.log('Error get game status:', r); setStage('error')}
 
   // useEffect(() => {
   //   const init = (actions, board, hand, info) => {
-  //     setState({actions, board, hand, info})
+  //     setGameState({actions, board, hand, info})
   //     setStage('running')
   //   }
-  //   getGameStatus(init, setError)
+  //   getGameStatus(id, init, setError)
   // })
 
   // Fetch data from API every 2 seconds.
-  // useInterval(() => { if (stage !== 'frozen') getGameStatus(setState, setError); }, 2000)
+  // useInterval(() => { if (stage !== 'frozen') getGameStatus(id, setGameState, setError); }, 2000)
+  getGameStatus(id, setGameState, setError)
 
 
   console.log('Render container game')
