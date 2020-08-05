@@ -93,7 +93,7 @@ export const startGame = (id, onSuccess, onFailure) => {
     .then(r =>  r.json())
     .then(r => {
       if (r.status === 'ok')
-        onSuccess(r)
+        onSuccess()
       else
         onFailure(r.message)
       })
@@ -120,9 +120,9 @@ export const getListGame = (onSuccess, onFailure) => {
 }
 
 
-export const getGameStatus = (id, onSuccess, onFailure) => {
+export const getGameStatus = (id, username, onSuccess, onFailure) => {
   console.log('Get Game Status.')
-  const path = url + `/game/${id}`
+  const path = url + `/game/${id}/${username}`
   const opt = {
     method: 'GET',
     headers: { 'Content-Type': 'application/json' },
