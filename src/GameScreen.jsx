@@ -9,7 +9,7 @@ import {
 
 const GameScreen = (props) => {
   console.log('Render game')
-  const { actions, name, playersInfo, points, turn, username, winner } = props
+  const { name, playersInfo, points, turn, username, winner } = props
   const myIndex = playersInfo.findIndex(p => p.player === username)
   let currentPlayer = playersInfo.splice(myIndex, 1)
   currentPlayer = currentPlayer[0]
@@ -74,7 +74,7 @@ const GameScreen = (props) => {
 
   const buttons = (
     <Box w={4/10}>
-      {actions.map((act, index) => (
+      {currentPlayer.actions.map((act, index) => (
         <Button key={index}>
           {act.type}
         </Button>

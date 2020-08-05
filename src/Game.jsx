@@ -31,7 +31,6 @@ const Game = () => {
   if (stage === 'running')
     return (
       <GameScreen
-        actions={[] /*game.actions*/}
         playersInfo={game.players_info}
         name={game.name}
         points={game.points}
