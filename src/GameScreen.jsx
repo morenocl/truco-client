@@ -9,10 +9,7 @@ import {
 
 const GameScreen = (props) => {
   console.log('Render game')
-  const { name, playersInfo, points, turn, username, winner } = props
-  const myIndex = playersInfo.findIndex(p => p.player === username)
-  let currentPlayer = playersInfo.splice(myIndex, 1)
-  currentPlayer = currentPlayer[0]
+  const { name, currentPlayer, playersInfo, points, turn, winner } = props
 
   const Card = ({n, p, ...rest}) => (
     <Box
@@ -39,7 +36,7 @@ const GameScreen = (props) => {
   const ViewPlayer = ({username, cards, playedCards, width, onTop}) => (
     <Box w={width} align='center'>
       {onTop && <StackCards cards={playedCards} />}
-      <Text fontSize="md">{username}</Text>
+      <Text fontSize="md" as={username===turn ? 'mark' : ''}>{username}</Text>
       <StackCards cards={cards} />
       {!onTop && <StackCards cards={playedCards} />}
     </Box>
@@ -75,7 +72,7 @@ const GameScreen = (props) => {
   const buttons = (
     <Box w={4/10}>
       {currentPlayer.actions.map((act, index) => (
-        <Button key={index}>
+        <Button key={index} onClick={act.func}>
           {act.type}
         </Button>
       ))}

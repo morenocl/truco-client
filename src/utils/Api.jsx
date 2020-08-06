@@ -137,3 +137,23 @@ export const getGameStatus = (id, username, onSuccess, onFailure) => {
       })
     .catch(err => onFailure(err))
 }
+
+
+export const playAction = (id, username, action, onSuccess, onFailure) => {
+  console.log('POST Play Action')
+  const path = url + `/game/${id}/${username}`
+  const opt = {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({action: action}),
+  }
+  fetch(path, opt)
+    .then(r =>  r.json())
+    .then(r => {
+      if (r.status === 'ok')
+        onSuccess()
+      else
+        onFailure(r.message)
+      })
+    .catch(err => onFailure(err))
+}
